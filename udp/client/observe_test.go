@@ -7,14 +7,15 @@ import (
 	"testing"
 	"time"
 
-	"github.com/plgd-dev/go-coap/v3/message"
-	"github.com/plgd-dev/go-coap/v3/message/codes"
-	"github.com/plgd-dev/go-coap/v3/message/pool"
-	coapNet "github.com/plgd-dev/go-coap/v3/net"
-	"github.com/plgd-dev/go-coap/v3/net/responsewriter"
-	"github.com/plgd-dev/go-coap/v3/options"
-	"github.com/plgd-dev/go-coap/v3/udp"
-	"github.com/plgd-dev/go-coap/v3/udp/client"
+	"go-attested-coap-over-ascon/v3/message"
+	"go-attested-coap-over-ascon/v3/message/codes"
+	"go-attested-coap-over-ascon/v3/message/pool"
+	coapNet "go-attested-coap-over-ascon/v3/net"
+	"go-attested-coap-over-ascon/v3/net/responsewriter"
+	"go-attested-coap-over-ascon/v3/options"
+	"go-attested-coap-over-ascon/v3/udp"
+	"go-attested-coap-over-ascon/v3/udp/client"
+
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

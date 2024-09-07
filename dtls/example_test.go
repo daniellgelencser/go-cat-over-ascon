@@ -7,9 +7,10 @@ import (
 	"log"
 	"time"
 
+	"go-attested-coap-over-ascon/v3/dtls"
+	"go-attested-coap-over-ascon/v3/net"
+
 	piondtls "github.com/pion/dtls/v2"
-	"github.com/plgd-dev/go-coap/v3/dtls"
-	"github.com/plgd-dev/go-coap/v3/net"
 )
 
 func ExampleConn_Get() {

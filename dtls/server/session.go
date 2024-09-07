@@ -8,10 +8,10 @@ import (
 	"sync"
 	"sync/atomic"
 
-	"github.com/plgd-dev/go-coap/v3/message/pool"
-	coapNet "github.com/plgd-dev/go-coap/v3/net"
-	"github.com/plgd-dev/go-coap/v3/udp/client"
-	"github.com/plgd-dev/go-coap/v3/udp/coder"
+	"go-attested-coap-over-ascon/v3/message/pool"
+	coapNet "go-attested-coap-over-ascon/v3/net"
+	"go-attested-coap-over-ascon/v3/udp/client"
+	"go-attested-coap-over-ascon/v3/udp/coder"
 )
 
 type EventFunc = func()

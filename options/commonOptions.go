@@ -6,19 +6,20 @@ import (
 	"net"
 	"time"
 
-	dtlsServer "github.com/plgd-dev/go-coap/v3/dtls/server"
-	"github.com/plgd-dev/go-coap/v3/message/pool"
-	"github.com/plgd-dev/go-coap/v3/mux"
-	"github.com/plgd-dev/go-coap/v3/net/blockwise"
-	"github.com/plgd-dev/go-coap/v3/net/client"
-	"github.com/plgd-dev/go-coap/v3/net/monitor/inactivity"
-	"github.com/plgd-dev/go-coap/v3/net/responsewriter"
-	"github.com/plgd-dev/go-coap/v3/options/config"
-	"github.com/plgd-dev/go-coap/v3/pkg/runner/periodic"
-	tcpClient "github.com/plgd-dev/go-coap/v3/tcp/client"
-	tcpServer "github.com/plgd-dev/go-coap/v3/tcp/server"
-	udpClient "github.com/plgd-dev/go-coap/v3/udp/client"
-	udpServer "github.com/plgd-dev/go-coap/v3/udp/server"
+	"go-attested-coap-over-ascon/v3/ascon/connection"
+	dtlsServer "go-attested-coap-over-ascon/v3/dtls/server"
+	"go-attested-coap-over-ascon/v3/message/pool"
+	"go-attested-coap-over-ascon/v3/mux"
+	"go-attested-coap-over-ascon/v3/net/blockwise"
+	"go-attested-coap-over-ascon/v3/net/client"
+	"go-attested-coap-over-ascon/v3/net/monitor/inactivity"
+	"go-attested-coap-over-ascon/v3/net/responsewriter"
+	"go-attested-coap-over-ascon/v3/options/config"
+	"go-attested-coap-over-ascon/v3/pkg/runner/periodic"
+	tcpClient "go-attested-coap-over-ascon/v3/tcp/client"
+	tcpServer "go-attested-coap-over-ascon/v3/tcp/server"
+	udpClient "go-attested-coap-over-ascon/v3/udp/client"
+	udpServer "go-attested-coap-over-ascon/v3/udp/server"
 )
 
 type ErrorFunc = config.ErrorFunc
@@ -66,6 +67,16 @@ func (o HandlerFuncOpt[H]) UDPServerApply(cfg *udpServer.Config) {
 	}
 }
 
+func (o HandlerFuncOpt[H]) ASCONServerApply(cfg *connection.Config) {
+	switch v := any(o.h).(type) {
+	case connection.HandlerFunc:
+		cfg.Handler = v
+	default:
+		var exp connection.HandlerFunc
+		panicForInvalidHandlerFunc(v, exp)
+	}
+}
+
 func (o HandlerFuncOpt[H]) DTLSServerApply(cfg *dtlsServer.Config) {
 	switch v := any(o.h).(type) {
 	case udpClient.HandlerFunc:
@@ -82,6 +93,16 @@ func (o HandlerFuncOpt[H]) UDPClientApply(cfg *udpClient.Config) {
 		cfg.Handler = v
 	default:
 		var t udpClient.HandlerFunc
+		panicForInvalidHandlerFunc(v, t)
+	}
+}
+
+func (o HandlerFuncOpt[H]) ASCONClientApply(cfg *connection.Config) {
+	switch v := any(o.h).(type) {
+	case connection.HandlerFunc:
+		cfg.Handler = v
+	default:
+		var t connection.HandlerFunc
 		panicForInvalidHandlerFunc(v, t)
 	}
 }
@@ -108,12 +129,20 @@ func (o MuxHandlerOpt) UDPServerApply(cfg *udpServer.Config) {
 	cfg.Handler = mux.ToHandler[*udpClient.Conn](o.m)
 }
 
+func (o MuxHandlerOpt) ASCONServerApply(cfg *connection.Config) {
+	cfg.Handler = mux.ToHandler[*connection.Conn](o.m)
+}
+
 func (o MuxHandlerOpt) DTLSServerApply(cfg *dtlsServer.Config) {
 	cfg.Handler = mux.ToHandler[*udpClient.Conn](o.m)
 }
 
 func (o MuxHandlerOpt) UDPClientApply(cfg *udpClient.Config) {
 	cfg.Handler = mux.ToHandler[*udpClient.Conn](o.m)
+}
+
+func (o MuxHandlerOpt) ASCONClientApply(cfg *connection.Config) {
+	cfg.Handler = mux.ToHandler[*connection.Conn](o.m)
 }
 
 // WithMux set's multiplexer for handle requests.
@@ -140,11 +169,19 @@ func (o ContextOpt) UDPServerApply(cfg *udpServer.Config) {
 	cfg.Ctx = o.ctx
 }
 
+func (o ContextOpt) ASCONServerApply(cfg *connection.Config) {
+	cfg.Ctx = o.ctx
+}
+
 func (o ContextOpt) DTLSServerApply(cfg *dtlsServer.Config) {
 	cfg.Ctx = o.ctx
 }
 
 func (o ContextOpt) UDPClientApply(cfg *udpClient.Config) {
+	cfg.Ctx = o.ctx
+}
+
+func (o ContextOpt) ASCONClientApply(cfg *connection.Config) {
 	cfg.Ctx = o.ctx
 }
 
@@ -170,11 +207,19 @@ func (o MaxMessageSizeOpt) UDPServerApply(cfg *udpServer.Config) {
 	cfg.MaxMessageSize = o.maxMessageSize
 }
 
+func (o MaxMessageSizeOpt) ASCONServerApply(cfg *connection.Config) {
+	cfg.MaxMessageSize = o.maxMessageSize
+}
+
 func (o MaxMessageSizeOpt) DTLSServerApply(cfg *dtlsServer.Config) {
 	cfg.MaxMessageSize = o.maxMessageSize
 }
 
 func (o MaxMessageSizeOpt) UDPClientApply(cfg *udpClient.Config) {
+	cfg.MaxMessageSize = o.maxMessageSize
+}
+
+func (o MaxMessageSizeOpt) ASCONClientApply(cfg *connection.Config) {
 	cfg.MaxMessageSize = o.maxMessageSize
 }
 
@@ -200,11 +245,19 @@ func (o ErrorsOpt) UDPServerApply(cfg *udpServer.Config) {
 	cfg.Errors = o.errors
 }
 
+func (o ErrorsOpt) ASCONServerApply(cfg *connection.Config) {
+	cfg.Errors = o.errors
+}
+
 func (o ErrorsOpt) DTLSServerApply(cfg *dtlsServer.Config) {
 	cfg.Errors = o.errors
 }
 
 func (o ErrorsOpt) UDPClientApply(cfg *udpClient.Config) {
+	cfg.Errors = o.errors
+}
+
+func (o ErrorsOpt) ASCONClientApply(cfg *connection.Config) {
 	cfg.Errors = o.errors
 }
 
@@ -252,6 +305,16 @@ func (o ProcessReceivedMessageOpt[C]) UDPServerApply(cfg *udpServer.Config) {
 	}
 }
 
+func (o ProcessReceivedMessageOpt[C]) ASCONServerApply(cfg *connection.Config) {
+	switch v := any(o.ProcessReceivedMessageFunc).(type) {
+	case config.ProcessReceivedMessageFunc[*connection.Conn]:
+		cfg.ProcessReceivedMessage = v
+	default:
+		var t config.ProcessReceivedMessageFunc[*connection.Conn]
+		panicForInvalidProcessReceivedMessageFunc(v, t)
+	}
+}
+
 func (o ProcessReceivedMessageOpt[C]) DTLSServerApply(cfg *dtlsServer.Config) {
 	switch v := any(o.ProcessReceivedMessageFunc).(type) {
 	case config.ProcessReceivedMessageFunc[*udpClient.Conn]:
@@ -272,13 +335,24 @@ func (o ProcessReceivedMessageOpt[C]) UDPClientApply(cfg *udpClient.Config) {
 	}
 }
 
+func (o ProcessReceivedMessageOpt[C]) ASCONClientApply(cfg *connection.Config) {
+	switch v := any(o.ProcessReceivedMessageFunc).(type) {
+	case config.ProcessReceivedMessageFunc[*connection.Conn]:
+		cfg.ProcessReceivedMessage = v
+	default:
+		var t config.ProcessReceivedMessageFunc[*connection.Conn]
+		panicForInvalidProcessReceivedMessageFunc(v, t)
+	}
+}
+
 func WithProcessReceivedMessageFunc[C responsewriter.Client](processReceivedMessageFunc config.ProcessReceivedMessageFunc[C]) ProcessReceivedMessageOpt[C] {
 	return ProcessReceivedMessageOpt[C]{ProcessReceivedMessageFunc: processReceivedMessageFunc}
 }
 
 type (
-	UDPOnInactive = func(cc *udpClient.Conn)
-	TCPOnInactive = func(cc *tcpClient.Conn)
+	ASCONOnInactive = func(cc *connection.Conn)
+	UDPOnInactive   = func(cc *udpClient.Conn)
+	TCPOnInactive   = func(cc *tcpClient.Conn)
 )
 
 type OnInactiveFunc interface {
@@ -314,6 +388,16 @@ func (o KeepAliveOpt[C]) toUDPCreateInactivityMonitor(onInactive UDPOnInactive) 
 	}
 }
 
+func (o KeepAliveOpt[C]) toASCONCreateInactivityMonitor(onInactive ASCONOnInactive) func() connection.InactivityMonitor {
+	return func() connection.InactivityMonitor {
+		keepalive := inactivity.NewKeepAlive(o.maxRetries, onInactive, func(cc *connection.Conn, receivePong func()) (func(), error) {
+			return cc.AsyncPing(receivePong)
+		})
+		return inactivity.New(o.timeout/time.Duration(o.maxRetries+1), keepalive.OnInactive)
+
+	}
+}
+
 func (o KeepAliveOpt[C]) TCPServerApply(cfg *tcpServer.Config) {
 	switch onInactive := any(o.onInactive).(type) {
 	case TCPOnInactive:
@@ -344,6 +428,16 @@ func (o KeepAliveOpt[C]) UDPServerApply(cfg *udpServer.Config) {
 	}
 }
 
+func (o KeepAliveOpt[C]) ASCONServerApply(cfg *connection.Config) {
+	switch onInactive := any(o.onInactive).(type) {
+	case ASCONOnInactive:
+		cfg.CreateInactivityMonitor = o.toASCONCreateInactivityMonitor(onInactive)
+	default:
+		var t ASCONOnInactive
+		panicForInvalidOnInactiveFunc(onInactive, t)
+	}
+}
+
 func (o KeepAliveOpt[C]) DTLSServerApply(cfg *dtlsServer.Config) {
 	switch onInactive := any(o.onInactive).(type) {
 	case UDPOnInactive:
@@ -360,6 +454,16 @@ func (o KeepAliveOpt[C]) UDPClientApply(cfg *udpClient.Config) {
 		cfg.CreateInactivityMonitor = o.toUDPCreateInactivityMonitor(onInactive)
 	default:
 		var t UDPOnInactive
+		panicForInvalidOnInactiveFunc(onInactive, t)
+	}
+}
+
+func (o KeepAliveOpt[C]) ASCONClientApply(cfg *connection.Config) {
+	switch onInactive := any(o.onInactive).(type) {
+	case ASCONOnInactive:
+		cfg.CreateInactivityMonitor = o.toASCONCreateInactivityMonitor(onInactive)
+	default:
+		var t ASCONOnInactive
 		panicForInvalidOnInactiveFunc(onInactive, t)
 	}
 }
@@ -387,6 +491,12 @@ func (o InactivityMonitorOpt[C]) toTCPCreateInactivityMonitor(onInactive TCPOnIn
 
 func (o InactivityMonitorOpt[C]) toUDPCreateInactivityMonitor(onInactive UDPOnInactive) func() udpClient.InactivityMonitor {
 	return func() udpClient.InactivityMonitor {
+		return inactivity.New(o.duration, onInactive)
+	}
+}
+
+func (o InactivityMonitorOpt[C]) toASCONCreateInactivityMonitor(onInactive ASCONOnInactive) func() connection.InactivityMonitor {
+	return func() connection.InactivityMonitor {
 		return inactivity.New(o.duration, onInactive)
 	}
 }
@@ -421,6 +531,16 @@ func (o InactivityMonitorOpt[C]) UDPServerApply(cfg *udpServer.Config) {
 	}
 }
 
+func (o InactivityMonitorOpt[C]) ASCONServerApply(cfg *connection.Config) {
+	switch onInactive := any(o.onInactive).(type) {
+	case ASCONOnInactive:
+		cfg.CreateInactivityMonitor = o.toASCONCreateInactivityMonitor(onInactive)
+	default:
+		var t ASCONOnInactive
+		panicForInvalidOnInactiveFunc(onInactive, t)
+	}
+}
+
 func (o InactivityMonitorOpt[C]) DTLSServerApply(cfg *dtlsServer.Config) {
 	switch onInactive := any(o.onInactive).(type) {
 	case UDPOnInactive:
@@ -437,6 +557,16 @@ func (o InactivityMonitorOpt[C]) UDPClientApply(cfg *udpClient.Config) {
 		cfg.CreateInactivityMonitor = o.toUDPCreateInactivityMonitor(onInactive)
 	default:
 		var t UDPOnInactive
+		panicForInvalidOnInactiveFunc(onInactive, t)
+	}
+}
+
+func (o InactivityMonitorOpt[C]) ASCONClientApply(cfg *connection.Config) {
+	switch onInactive := any(o.onInactive).(type) {
+	case ASCONOnInactive:
+		cfg.CreateInactivityMonitor = o.toASCONCreateInactivityMonitor(onInactive)
+	default:
+		var t ASCONOnInactive
 		panicForInvalidOnInactiveFunc(onInactive, t)
 	}
 }
@@ -459,6 +589,10 @@ func (o NetOpt) TCPClientApply(cfg *tcpClient.Config) {
 }
 
 func (o NetOpt) UDPClientApply(cfg *udpClient.Config) {
+	cfg.Net = o.net
+}
+
+func (o NetOpt) ASCONClientApply(cfg *connection.Config) {
 	cfg.Net = o.net
 }
 
@@ -488,7 +622,15 @@ func (o PeriodicRunnerOpt) UDPServerApply(cfg *udpServer.Config) {
 	cfg.PeriodicRunner = o.periodicRunner
 }
 
+func (o PeriodicRunnerOpt) ASCONServerApply(cfg *connection.Config) {
+	cfg.PeriodicRunner = o.periodicRunner
+}
+
 func (o PeriodicRunnerOpt) DTLSServerApply(cfg *dtlsServer.Config) {
+	cfg.PeriodicRunner = o.periodicRunner
+}
+
+func (o PeriodicRunnerOpt) ASCONClientApply(cfg *connection.Config) {
 	cfg.PeriodicRunner = o.periodicRunner
 }
 
@@ -510,6 +652,12 @@ func (o BlockwiseOpt) UDPServerApply(cfg *udpServer.Config) {
 	cfg.BlockwiseTransferTimeout = o.transferTimeout
 }
 
+func (o BlockwiseOpt) ASCONServerApply(cfg *connection.Config) {
+	cfg.BlockwiseEnable = o.enable
+	cfg.BlockwiseSZX = o.szx
+	cfg.BlockwiseTransferTimeout = o.transferTimeout
+}
+
 func (o BlockwiseOpt) DTLSServerApply(cfg *dtlsServer.Config) {
 	cfg.BlockwiseEnable = o.enable
 	cfg.BlockwiseSZX = o.szx
@@ -517,6 +665,12 @@ func (o BlockwiseOpt) DTLSServerApply(cfg *dtlsServer.Config) {
 }
 
 func (o BlockwiseOpt) UDPClientApply(cfg *udpClient.Config) {
+	cfg.BlockwiseEnable = o.enable
+	cfg.BlockwiseSZX = o.szx
+	cfg.BlockwiseTransferTimeout = o.transferTimeout
+}
+
+func (o BlockwiseOpt) ASCONClientApply(cfg *connection.Config) {
 	cfg.BlockwiseEnable = o.enable
 	cfg.BlockwiseSZX = o.szx
 	cfg.BlockwiseTransferTimeout = o.transferTimeout
@@ -562,6 +716,16 @@ func (o OnNewConnOpt[F]) UDPServerApply(cfg *udpServer.Config) {
 		cfg.OnNewConn = v
 	default:
 		var exp udpServer.OnNewConnFunc
+		panicForInvalidOnNewConnFunc(v, exp)
+	}
+}
+
+func (o OnNewConnOpt[F]) ASCONServerApply(cfg *connection.Config) {
+	switch v := any(o.f).(type) {
+	case connection.OnNewConnFunc:
+		cfg.OnNewConn = v
+	default:
+		var exp connection.OnNewConnFunc
 		panicForInvalidOnNewConnFunc(v, exp)
 	}
 }
@@ -658,6 +822,10 @@ func (o CloseSocketOpt) UDPClientApply(cfg *udpClient.Config) {
 	cfg.CloseSocket = true
 }
 
+func (o CloseSocketOpt) ASCONClientApply(cfg *connection.Config) {
+	cfg.CloseSocket = true
+}
+
 // WithCloseSocket closes socket at the close connection.
 func WithCloseSocket() CloseSocketOpt {
 	return CloseSocketOpt{}
@@ -669,6 +837,12 @@ type DialerOpt struct {
 }
 
 func (o DialerOpt) UDPClientApply(cfg *udpClient.Config) {
+	if o.dialer != nil {
+		cfg.Dialer = o.dialer
+	}
+}
+
+func (o DialerOpt) ASCONClientApply(cfg *connection.Config) {
 	if o.dialer != nil {
 		cfg.Dialer = o.dialer
 	}
@@ -704,11 +878,19 @@ func (o MessagePoolOpt) UDPServerApply(cfg *udpServer.Config) {
 	cfg.MessagePool = o.messagePool
 }
 
+func (o MessagePoolOpt) ASCONServerApply(cfg *connection.Config) {
+	cfg.MessagePool = o.messagePool
+}
+
 func (o MessagePoolOpt) DTLSServerApply(cfg *dtlsServer.Config) {
 	cfg.MessagePool = o.messagePool
 }
 
 func (o MessagePoolOpt) UDPClientApply(cfg *udpClient.Config) {
+	cfg.MessagePool = o.messagePool
+}
+
+func (o MessagePoolOpt) ASCONClientApply(cfg *connection.Config) {
 	cfg.MessagePool = o.messagePool
 }
 
@@ -736,11 +918,19 @@ func (o GetTokenOpt) UDPServerApply(cfg *udpServer.Config) {
 	cfg.GetToken = o.getToken
 }
 
+func (o GetTokenOpt) ASCONServerApply(cfg *connection.Config) {
+	cfg.GetToken = o.getToken
+}
+
 func (o GetTokenOpt) DTLSServerApply(cfg *dtlsServer.Config) {
 	cfg.GetToken = o.getToken
 }
 
 func (o GetTokenOpt) UDPClientApply(cfg *udpClient.Config) {
+	cfg.GetToken = o.getToken
+}
+
+func (o GetTokenOpt) ASCONClientApply(cfg *connection.Config) {
 	cfg.GetToken = o.getToken
 }
 
@@ -766,11 +956,19 @@ func (o LimitClientParallelRequestOpt) UDPServerApply(cfg *udpServer.Config) {
 	cfg.LimitClientParallelRequests = o.limitClientParallelRequests
 }
 
+func (o LimitClientParallelRequestOpt) ASCONServerApply(cfg *connection.Config) {
+	cfg.LimitClientParallelRequests = o.limitClientParallelRequests
+}
+
 func (o LimitClientParallelRequestOpt) DTLSServerApply(cfg *dtlsServer.Config) {
 	cfg.LimitClientParallelRequests = o.limitClientParallelRequests
 }
 
 func (o LimitClientParallelRequestOpt) UDPClientApply(cfg *udpClient.Config) {
+	cfg.LimitClientParallelRequests = o.limitClientParallelRequests
+}
+
+func (o LimitClientParallelRequestOpt) ASCONClientApply(cfg *connection.Config) {
 	cfg.LimitClientParallelRequests = o.limitClientParallelRequests
 }
 
@@ -796,11 +994,19 @@ func (o LimitClientEndpointParallelRequestOpt) UDPServerApply(cfg *udpServer.Con
 	cfg.LimitClientEndpointParallelRequests = o.limitClientEndpointParallelRequests
 }
 
+func (o LimitClientEndpointParallelRequestOpt) ASCONServerApply(cfg *connection.Config) {
+	cfg.LimitClientEndpointParallelRequests = o.limitClientEndpointParallelRequests
+}
+
 func (o LimitClientEndpointParallelRequestOpt) DTLSServerApply(cfg *dtlsServer.Config) {
 	cfg.LimitClientEndpointParallelRequests = o.limitClientEndpointParallelRequests
 }
 
 func (o LimitClientEndpointParallelRequestOpt) UDPClientApply(cfg *udpClient.Config) {
+	cfg.LimitClientEndpointParallelRequests = o.limitClientEndpointParallelRequests
+}
+
+func (o LimitClientEndpointParallelRequestOpt) ASCONClientApply(cfg *connection.Config) {
 	cfg.LimitClientEndpointParallelRequests = o.limitClientEndpointParallelRequests
 }
 
@@ -826,11 +1032,19 @@ func (o ReceivedMessageQueueSizeOpt) UDPServerApply(cfg *udpServer.Config) {
 	cfg.ReceivedMessageQueueSize = o.receivedMessageQueueSize
 }
 
+func (o ReceivedMessageQueueSizeOpt) ASCONServerApply(cfg *connection.Config) {
+	cfg.ReceivedMessageQueueSize = o.receivedMessageQueueSize
+}
+
 func (o ReceivedMessageQueueSizeOpt) DTLSServerApply(cfg *dtlsServer.Config) {
 	cfg.ReceivedMessageQueueSize = o.receivedMessageQueueSize
 }
 
 func (o ReceivedMessageQueueSizeOpt) UDPClientApply(cfg *udpClient.Config) {
+	cfg.ReceivedMessageQueueSize = o.receivedMessageQueueSize
+}
+
+func (o ReceivedMessageQueueSizeOpt) ASCONClientApply(cfg *connection.Config) {
 	cfg.ReceivedMessageQueueSize = o.receivedMessageQueueSize
 }
 

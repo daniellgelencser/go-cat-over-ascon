@@ -6,8 +6,9 @@ import (
 	"log"
 	"net"
 
+	"go-attested-coap-over-ascon/v3/dtls"
+
 	piondtls "github.com/pion/dtls/v2"
-	"github.com/plgd-dev/go-coap/v3/dtls"
 )
 
 func main() {

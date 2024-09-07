@@ -6,13 +6,13 @@ import (
 	"fmt"
 	"net"
 
-	"github.com/plgd-dev/go-coap/v3/message"
-	"github.com/plgd-dev/go-coap/v3/message/pool"
-	coapNet "github.com/plgd-dev/go-coap/v3/net"
-	"github.com/plgd-dev/go-coap/v3/net/responsewriter"
-	pkgErrors "github.com/plgd-dev/go-coap/v3/pkg/errors"
-	"github.com/plgd-dev/go-coap/v3/udp/client"
-	"github.com/plgd-dev/go-coap/v3/udp/coder"
+	"go-attested-coap-over-ascon/v3/message"
+	"go-attested-coap-over-ascon/v3/message/pool"
+	coapNet "go-attested-coap-over-ascon/v3/net"
+	"go-attested-coap-over-ascon/v3/net/responsewriter"
+	pkgErrors "go-attested-coap-over-ascon/v3/pkg/errors"
+	"go-attested-coap-over-ascon/v3/udp/client"
+	"go-attested-coap-over-ascon/v3/udp/coder"
 )
 
 // Discover sends GET to multicast or unicast address and waits for responses until context timeouts or server shutdown.

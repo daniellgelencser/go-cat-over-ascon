@@ -7,11 +7,12 @@ import (
 	"testing"
 	"time"
 
+	"go-attested-coap-over-ascon/v3/message"
+	"go-attested-coap-over-ascon/v3/message/codes"
+	"go-attested-coap-over-ascon/v3/message/pool"
+	"go-attested-coap-over-ascon/v3/net/responsewriter"
+
 	"github.com/dsnet/golib/memfile"
-	"github.com/plgd-dev/go-coap/v3/message"
-	"github.com/plgd-dev/go-coap/v3/message/codes"
-	"github.com/plgd-dev/go-coap/v3/message/pool"
-	"github.com/plgd-dev/go-coap/v3/net/responsewriter"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

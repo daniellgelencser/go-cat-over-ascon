@@ -11,39 +11,44 @@ type Code uint16
 
 // Request Codes
 const (
-	GET    Code = 1
-	POST   Code = 2
-	PUT    Code = 3
-	DELETE Code = 4
+	GET       Code = 1
+	POST      Code = 2
+	PUT       Code = 3
+	DELETE    Code = 4
+	PROOF     Code = 5  //<- attest response: Empty (ACK)
+	PROVE     Code = 6  //<- attest response: ProofNotFound | Unauthorized | Proof
+	HANDSHAKE Code = 31 //<- attest response: Empty (Server Hello)
 )
 
 // Response Codes
 const (
 	Empty                   Code = 0
-	Created                 Code = 65
-	Deleted                 Code = 66
-	Valid                   Code = 67
-	Changed                 Code = 68
-	Content                 Code = 69
-	Continue                Code = 95
-	BadRequest              Code = 128
-	Unauthorized            Code = 129
-	BadOption               Code = 130
-	Forbidden               Code = 131
-	NotFound                Code = 132
-	MethodNotAllowed        Code = 133
-	NotAcceptable           Code = 134
-	RequestEntityIncomplete Code = 136
-	PreconditionFailed      Code = 140
-	RequestEntityTooLarge   Code = 141
-	UnsupportedMediaType    Code = 143
-	TooManyRequests         Code = 157
-	InternalServerError     Code = 160
-	NotImplemented          Code = 161
-	BadGateway              Code = 162
-	ServiceUnavailable      Code = 163
-	GatewayTimeout          Code = 164
-	ProxyingNotSupported    Code = 165
+	Created                 Code = 65  // 2 *32 + 01
+	Deleted                 Code = 66  // 2 *32 + 02
+	Valid                   Code = 67  // 2 *32 + 03
+	Changed                 Code = 68  // 2 *32 + 04
+	Content                 Code = 69  // 2 *32 + 05
+	Proof                   Code = 70  // 2 *32 + 06
+	Continue                Code = 95  // 2 *32 + 31
+	BadRequest              Code = 128 // 4 *32 + 00
+	Unauthorized            Code = 129 // 4 *32 + 01
+	BadOption               Code = 130 // 4 *32 + 02
+	Forbidden               Code = 131 // 4 *32 + 03
+	NotFound                Code = 132 // 4 *32 + 04
+	MethodNotAllowed        Code = 133 // 4 *32 + 05
+	NotAcceptable           Code = 134 // 4 *32 + 06
+	RequestEntityIncomplete Code = 136 // 4 *32 + 08
+	PreconditionFailed      Code = 140 // 4 *32 + 12
+	RequestEntityTooLarge   Code = 141 // 4 *32 + 13
+	UnsupportedMediaType    Code = 143 // 4 *32 + 15
+	ProofNotFound           Code = 144 // 4 *32 + 16 <- attest send nonce
+	TooManyRequests         Code = 157 // 4 *32 + 29
+	InternalServerError     Code = 160 // 5 *32 + 00
+	NotImplemented          Code = 161 // 5 *32 + 01
+	BadGateway              Code = 162 // 5 *32 + 02
+	ServiceUnavailable      Code = 163 // 5 *32 + 03
+	GatewayTimeout          Code = 164 // 5 *32 + 04
+	ProxyingNotSupported    Code = 165 // 5 *32 + 05
 )
 
 // Signaling Codes for TCP

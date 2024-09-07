@@ -3,7 +3,8 @@ package fn_test
 import (
 	"testing"
 
-	"github.com/plgd-dev/go-coap/v3/pkg/fn"
+	"go-attested-coap-over-ascon/v3/pkg/fn"
+
 	"github.com/stretchr/testify/require"
 )
 

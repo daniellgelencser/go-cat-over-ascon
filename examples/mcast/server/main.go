@@ -5,12 +5,12 @@ import (
 	"log"
 	gonet "net"
 
-	"github.com/plgd-dev/go-coap/v3/message"
-	"github.com/plgd-dev/go-coap/v3/message/codes"
-	"github.com/plgd-dev/go-coap/v3/mux"
-	"github.com/plgd-dev/go-coap/v3/net"
-	"github.com/plgd-dev/go-coap/v3/options"
-	"github.com/plgd-dev/go-coap/v3/udp"
+	"go-attested-coap-over-ascon/v3/message"
+	"go-attested-coap-over-ascon/v3/message/codes"
+	"go-attested-coap-over-ascon/v3/mux"
+	"go-attested-coap-over-ascon/v3/net"
+	"go-attested-coap-over-ascon/v3/options"
+	"go-attested-coap-over-ascon/v3/udp"
 )
 
 func handleMcast(w mux.ResponseWriter, r *mux.Message) {

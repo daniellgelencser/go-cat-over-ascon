@@ -5,12 +5,12 @@ import (
 	"net"
 	"time"
 
-	"github.com/plgd-dev/go-coap/v3/message"
-	"github.com/plgd-dev/go-coap/v3/message/codes"
-	"github.com/plgd-dev/go-coap/v3/message/pool"
-	"github.com/plgd-dev/go-coap/v3/net/monitor/inactivity"
-	"github.com/plgd-dev/go-coap/v3/net/responsewriter"
-	"github.com/plgd-dev/go-coap/v3/options/config"
+	"go-attested-coap-over-ascon/v3/message"
+	"go-attested-coap-over-ascon/v3/message/codes"
+	"go-attested-coap-over-ascon/v3/message/pool"
+	"go-attested-coap-over-ascon/v3/net/monitor/inactivity"
+	"go-attested-coap-over-ascon/v3/net/responsewriter"
+	"go-attested-coap-over-ascon/v3/options/config"
 )
 
 const DefaultMTU = 1472

@@ -5,10 +5,10 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/plgd-dev/go-coap/v3/message"
-	"github.com/plgd-dev/go-coap/v3/message/pool"
-	limitparallelrequests "github.com/plgd-dev/go-coap/v3/net/client/limitParallelRequests"
-	"github.com/plgd-dev/go-coap/v3/net/observation"
+	"go-attested-coap-over-ascon/v3/message"
+	"go-attested-coap-over-ascon/v3/message/pool"
+	limitparallelrequests "go-attested-coap-over-ascon/v3/net/client/limitParallelRequests"
+	"go-attested-coap-over-ascon/v3/net/observation"
 )
 
 type (

@@ -7,7 +7,7 @@ import (
 	"sync/atomic"
 	"time"
 
-	pkgRand "github.com/plgd-dev/go-coap/v3/pkg/rand"
+	pkgRand "go-attested-coap-over-ascon/v3/pkg/rand"
 )
 
 var weakRng = pkgRand.NewRand(time.Now().UnixNano())

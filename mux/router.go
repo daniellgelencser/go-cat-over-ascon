@@ -6,9 +6,10 @@ import (
 	"io"
 	"sync"
 
-	"github.com/plgd-dev/go-coap/v3/message"
-	"github.com/plgd-dev/go-coap/v3/message/codes"
-	"github.com/plgd-dev/go-coap/v3/message/pool"
+	"go-attested-coap-over-ascon/v3/message"
+	"go-attested-coap-over-ascon/v3/message/codes"
+	"go-attested-coap-over-ascon/v3/message/pool"
+
 	"golang.org/x/exp/maps" // TODO: replace with standard maps package as soon as Go dependency hits 1.21
 )
 

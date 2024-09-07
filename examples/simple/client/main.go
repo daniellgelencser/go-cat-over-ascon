@@ -6,7 +6,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/plgd-dev/go-coap/v3/udp"
+	"go-attested-coap-over-ascon/v3/udp"
 )
 
 func main() {

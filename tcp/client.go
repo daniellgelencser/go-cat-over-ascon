@@ -6,13 +6,13 @@ import (
 	"net"
 	"time"
 
-	"github.com/plgd-dev/go-coap/v3/message"
-	"github.com/plgd-dev/go-coap/v3/message/pool"
-	coapNet "github.com/plgd-dev/go-coap/v3/net"
-	"github.com/plgd-dev/go-coap/v3/net/blockwise"
-	"github.com/plgd-dev/go-coap/v3/net/monitor/inactivity"
-	"github.com/plgd-dev/go-coap/v3/options"
-	client "github.com/plgd-dev/go-coap/v3/tcp/client"
+	"go-attested-coap-over-ascon/v3/message"
+	"go-attested-coap-over-ascon/v3/message/pool"
+	coapNet "go-attested-coap-over-ascon/v3/net"
+	"go-attested-coap-over-ascon/v3/net/blockwise"
+	"go-attested-coap-over-ascon/v3/net/monitor/inactivity"
+	"go-attested-coap-over-ascon/v3/options"
+	client "go-attested-coap-over-ascon/v3/tcp/client"
 )
 
 // A Option sets options such as credentials, keepalive parameters, etc.

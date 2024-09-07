@@ -8,13 +8,14 @@ import (
 	"net"
 	"time"
 
+	"go-attested-coap-over-ascon/v3/dtls/server"
+	"go-attested-coap-over-ascon/v3/message"
+	"go-attested-coap-over-ascon/v3/message/codes"
+	"go-attested-coap-over-ascon/v3/mux"
+	"go-attested-coap-over-ascon/v3/options"
+	udpClient "go-attested-coap-over-ascon/v3/udp/client"
+
 	piondtls "github.com/pion/dtls/v2"
-	"github.com/plgd-dev/go-coap/v3/dtls/server"
-	"github.com/plgd-dev/go-coap/v3/message"
-	"github.com/plgd-dev/go-coap/v3/message/codes"
-	"github.com/plgd-dev/go-coap/v3/mux"
-	"github.com/plgd-dev/go-coap/v3/options"
-	udpClient "github.com/plgd-dev/go-coap/v3/udp/client"
 	"go.uber.org/atomic"
 )
 

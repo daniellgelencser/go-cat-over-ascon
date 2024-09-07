@@ -8,10 +8,11 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/plgd-dev/go-coap/v3/message"
-	"github.com/plgd-dev/go-coap/v3/message/pool"
-	"github.com/plgd-dev/go-coap/v3/tcp/coder"
-	"github.com/plgd-dev/go-coap/v3/test/net"
+	"go-attested-coap-over-ascon/v3/message"
+	"go-attested-coap-over-ascon/v3/message/pool"
+	"go-attested-coap-over-ascon/v3/tcp/coder"
+	"go-attested-coap-over-ascon/v3/test/net"
+
 	"github.com/stretchr/testify/require"
 )
 

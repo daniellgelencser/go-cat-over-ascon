@@ -7,16 +7,17 @@ import (
 	"fmt"
 	"log"
 
-	piondtls "github.com/pion/dtls/v2"
-	coap "github.com/plgd-dev/go-coap/v3"
-	"github.com/plgd-dev/go-coap/v3/message"
-	"github.com/plgd-dev/go-coap/v3/message/codes"
-	"github.com/plgd-dev/go-coap/v3/mux"
-	"github.com/plgd-dev/go-coap/v3/options"
+	coap "go-attested-coap-over-ascon/v3"
+	"go-attested-coap-over-ascon/v3/message"
+	"go-attested-coap-over-ascon/v3/message/codes"
+	"go-attested-coap-over-ascon/v3/mux"
+	"go-attested-coap-over-ascon/v3/options"
 
-	dtlsServer "github.com/plgd-dev/go-coap/v3/dtls/server"
-	tcpServer "github.com/plgd-dev/go-coap/v3/tcp/server"
-	udpClient "github.com/plgd-dev/go-coap/v3/udp/client"
+	piondtls "github.com/pion/dtls/v2"
+
+	dtlsServer "go-attested-coap-over-ascon/v3/dtls/server"
+	tcpServer "go-attested-coap-over-ascon/v3/tcp/server"
+	udpClient "go-attested-coap-over-ascon/v3/udp/client"
 )
 
 func handleA(w mux.ResponseWriter, r *mux.Message) {

@@ -6,16 +6,18 @@ import (
 	"errors"
 	"fmt"
 
+	"go-attested-coap-over-ascon/v3/ascon"
+	"go-attested-coap-over-ascon/v3/dtls"
+	dtlsServer "go-attested-coap-over-ascon/v3/dtls/server"
+	"go-attested-coap-over-ascon/v3/mux"
+	"go-attested-coap-over-ascon/v3/net"
+	"go-attested-coap-over-ascon/v3/options"
+	"go-attested-coap-over-ascon/v3/tcp"
+	tcpServer "go-attested-coap-over-ascon/v3/tcp/server"
+	"go-attested-coap-over-ascon/v3/udp"
+	udpServer "go-attested-coap-over-ascon/v3/udp/server"
+
 	piondtls "github.com/pion/dtls/v2"
-	"github.com/plgd-dev/go-coap/v3/dtls"
-	dtlsServer "github.com/plgd-dev/go-coap/v3/dtls/server"
-	"github.com/plgd-dev/go-coap/v3/mux"
-	"github.com/plgd-dev/go-coap/v3/net"
-	"github.com/plgd-dev/go-coap/v3/options"
-	"github.com/plgd-dev/go-coap/v3/tcp"
-	tcpServer "github.com/plgd-dev/go-coap/v3/tcp/server"
-	"github.com/plgd-dev/go-coap/v3/udp"
-	udpServer "github.com/plgd-dev/go-coap/v3/udp/server"
 )
 
 // ListenAndServe Starts a server on address and network specified Invoke handler
@@ -80,6 +82,20 @@ func ListenAndServeDTLS(network string, addr string, config *piondtls.Config, ha
 		}
 	}()
 	s := dtls.NewServer(options.WithMux(handler))
+	return s.Serve(l)
+}
+
+func ListenAndServerASCON(network string, addr string, handler mux.Handler) (err error) {
+	l, err := net.NewListenUDP(network, addr)
+	if err != nil {
+		return err
+	}
+	defer func() {
+		if errC := l.Close(); errC != nil && err == nil {
+			err = errC
+		}
+	}()
+	s := ascon.NewServer(options.WithMux(handler))
 	return s.Serve(l)
 }
 

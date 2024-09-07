@@ -7,8 +7,8 @@ import (
 	"log"
 	"time"
 
-	"github.com/plgd-dev/go-coap/v3/net"
-	"github.com/plgd-dev/go-coap/v3/tcp"
+	"go-attested-coap-over-ascon/v3/net"
+	"go-attested-coap-over-ascon/v3/tcp"
 )
 
 func ExampleConn_Get() {

@@ -5,8 +5,8 @@ import (
 	"io"
 	"net"
 
-	"github.com/plgd-dev/go-coap/v3/message"
-	"github.com/plgd-dev/go-coap/v3/message/pool"
+	"go-attested-coap-over-ascon/v3/message"
+	"go-attested-coap-over-ascon/v3/message/pool"
 )
 
 type Observation = interface {

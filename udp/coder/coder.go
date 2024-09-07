@@ -5,8 +5,8 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/plgd-dev/go-coap/v3/message"
-	"github.com/plgd-dev/go-coap/v3/message/codes"
+	"go-attested-coap-over-ascon/v3/message"
+	"go-attested-coap-over-ascon/v3/message/codes"
 )
 
 var DefaultCoder = new(Coder)

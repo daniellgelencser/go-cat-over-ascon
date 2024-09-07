@@ -5,11 +5,12 @@ import (
 	"fmt"
 	"log"
 
+	coap "go-attested-coap-over-ascon/v3"
+	"go-attested-coap-over-ascon/v3/message"
+	"go-attested-coap-over-ascon/v3/message/codes"
+	"go-attested-coap-over-ascon/v3/mux"
+
 	piondtls "github.com/pion/dtls/v2"
-	coap "github.com/plgd-dev/go-coap/v3"
-	"github.com/plgd-dev/go-coap/v3/message"
-	"github.com/plgd-dev/go-coap/v3/message/codes"
-	"github.com/plgd-dev/go-coap/v3/mux"
 )
 
 func handleA(w mux.ResponseWriter, r *mux.Message) {

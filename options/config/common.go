@@ -5,12 +5,12 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/plgd-dev/go-coap/v3/message"
-	"github.com/plgd-dev/go-coap/v3/message/pool"
-	"github.com/plgd-dev/go-coap/v3/net/blockwise"
-	"github.com/plgd-dev/go-coap/v3/net/client"
-	"github.com/plgd-dev/go-coap/v3/net/responsewriter"
-	"github.com/plgd-dev/go-coap/v3/pkg/runner/periodic"
+	"go-attested-coap-over-ascon/v3/message"
+	"go-attested-coap-over-ascon/v3/message/pool"
+	"go-attested-coap-over-ascon/v3/net/blockwise"
+	"go-attested-coap-over-ascon/v3/net/client"
+	"go-attested-coap-over-ascon/v3/net/responsewriter"
+	"go-attested-coap-over-ascon/v3/pkg/runner/periodic"
 )
 
 type (

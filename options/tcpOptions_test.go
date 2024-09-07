@@ -4,10 +4,11 @@ import (
 	"crypto/tls"
 	"testing"
 
-	"github.com/plgd-dev/go-coap/v3/options"
-	"github.com/plgd-dev/go-coap/v3/tcp"
-	"github.com/plgd-dev/go-coap/v3/tcp/client"
-	"github.com/plgd-dev/go-coap/v3/tcp/server"
+	"go-attested-coap-over-ascon/v3/options"
+	"go-attested-coap-over-ascon/v3/tcp"
+	"go-attested-coap-over-ascon/v3/tcp/client"
+	"go-attested-coap-over-ascon/v3/tcp/server"
+
 	"github.com/stretchr/testify/require"
 )
 
