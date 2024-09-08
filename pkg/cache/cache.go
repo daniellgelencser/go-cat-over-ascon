@@ -3,7 +3,7 @@ package cache
 import (
 	"time"
 
-	"go-attested-coap-over-ascon/v3/pkg/sync"
+	"github.com/daniellgelencser/go-attested-coap-over-ascon/v3/pkg/sync"
 
 	"go.uber.org/atomic"
 )

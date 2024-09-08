@@ -3,7 +3,7 @@ package mux_test
 import (
 	"testing"
 
-	"go-attested-coap-over-ascon/v3/mux"
+	"github.com/daniellgelencser/go-attested-coap-over-ascon/v3/mux"
 
 	"github.com/stretchr/testify/require"
 	"golang.org/x/exp/maps" // TODO: replace with standard maps package as soon as Go dependency hits 1.21

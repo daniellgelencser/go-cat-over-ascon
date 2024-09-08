@@ -7,11 +7,11 @@ import (
 	"os"
 	"time"
 
-	"go-attested-coap-over-ascon/v3/ascon"
+	"github.com/daniellgelencser/go-attested-coap-over-ascon/v3/ascon"
 )
 
 func main() {
-	co, err := ascon.Dial("localhost:5688")
+	co, err := ascon.Dial("192.168.1.22:5688")
 	if err != nil {
 		log.Fatalf("Error dialing: %v", err)
 	}

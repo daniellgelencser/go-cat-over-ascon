@@ -12,12 +12,12 @@ import (
 	"sync/atomic"
 	"time"
 
-	"go-attested-coap-over-ascon/v3/message"
-	"go-attested-coap-over-ascon/v3/message/pool"
-	"go-attested-coap-over-ascon/v3/net"
-	"go-attested-coap-over-ascon/v3/options"
-	"go-attested-coap-over-ascon/v3/udp"
-	"go-attested-coap-over-ascon/v3/udp/client"
+	"github.com/daniellgelencser/go-attested-coap-over-ascon/v3/message"
+	"github.com/daniellgelencser/go-attested-coap-over-ascon/v3/message/pool"
+	"github.com/daniellgelencser/go-attested-coap-over-ascon/v3/net"
+	"github.com/daniellgelencser/go-attested-coap-over-ascon/v3/options"
+	"github.com/daniellgelencser/go-attested-coap-over-ascon/v3/udp"
+	"github.com/daniellgelencser/go-attested-coap-over-ascon/v3/udp/client"
 )
 
 // https://blog.packagecloud.io/eng/2016/06/22/monitoring-tuning-linux-networking-stack-receiving-data/#monitoring-network-data-processing

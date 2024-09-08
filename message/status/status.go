@@ -5,8 +5,8 @@ import (
 	"errors"
 	"fmt"
 
-	"go-attested-coap-over-ascon/v3/message/codes"
-	"go-attested-coap-over-ascon/v3/message/pool"
+	"github.com/daniellgelencser/go-attested-coap-over-ascon/v3/message/codes"
+	"github.com/daniellgelencser/go-attested-coap-over-ascon/v3/message/pool"
 )
 
 const (

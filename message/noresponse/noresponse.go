@@ -1,7 +1,7 @@
 package noresponse
 
 import (
-	"go-attested-coap-over-ascon/v3/message/codes"
+	"github.com/daniellgelencser/go-attested-coap-over-ascon/v3/message/codes"
 )
 
 var (

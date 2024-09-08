@@ -7,9 +7,9 @@ import (
 	"sync"
 	"sync/atomic"
 
-	"go-attested-coap-over-ascon/v3/ascon/coder"
-	"go-attested-coap-over-ascon/v3/message/pool"
-	coapNet "go-attested-coap-over-ascon/v3/net"
+	"github.com/daniellgelencser/go-attested-coap-over-ascon/v3/ascon/coder"
+	"github.com/daniellgelencser/go-attested-coap-over-ascon/v3/message/pool"
+	coapNet "github.com/daniellgelencser/go-attested-coap-over-ascon/v3/net"
 )
 
 type ISession interface {

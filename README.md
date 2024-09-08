@@ -1,15 +1,15 @@
 # Go-CoAP
 
-[![Build Status](https://go-attested-coap-over-ascon/workflows/Test/badge.svg)](https://go-attested-coap-over-ascon/actions?query=workflow%3ATest)
+[![Build Status](https://github.com/daniellgelencser/go-attested-coap-over-ascon/workflows/Test/badge.svg)](https://github.com/daniellgelencser/go-attested-coap-over-ascon/actions?query=workflow%3ATest)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=plgd-dev_go-coap&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=plgd-dev_go-coap)
 [![Coverage](https://img.shields.io/sonar/coverage/plgd-dev_go-coap?server=https%3A%2F%2Fsonarcloud.io)](https://sonarcloud.io/summary/overall?id=plgd-dev_go-coap)
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fplgd-dev%2Fgo-coap.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fplgd-dev%2Fgo-coap?ref=badge_shield)
 [![sponsors](https://opencollective.com/go-coap/sponsors/badge.svg)](https://opencollective.com/go-coap#sponsors)
-[![contributors](https://img.shields.io/github/contributors/plgd-dev/go-coap)](https://go-attested-coap-over-ascon/graphs/contributors)
-[![GitHub stars](https://img.shields.io/github/stars/plgd-dev/go-coap)](https://go-attested-coap-over-ascon/stargazers)
-[![GitHub license](https://img.shields.io/github/license/plgd-dev/go-coap)](https://go-attested-coap-over-ascon/blob/master/LICENSE)
-[![GoDoc](https://pkg.go.dev/badge/go-attested-coap-over-ascon/v3?utm_source=godoc)](https://pkg.go.dev/go-attested-coap-over-ascon/v3?utm_source=godoc)
-<!-- [![Go Report](https://goreportcard.com/badge/go-attested-coap-over-ascon)](https://goreportcard.com/report/go-attested-coap-over-ascon) -->
+[![contributors](https://img.shields.io/github/contributors/plgd-dev/go-coap)](https://github.com/daniellgelencser/go-attested-coap-over-ascon/graphs/contributors)
+[![GitHub stars](https://img.shields.io/github/stars/plgd-dev/go-coap)](https://github.com/daniellgelencser/go-attested-coap-over-ascon/stargazers)
+[![GitHub license](https://img.shields.io/github/license/plgd-dev/go-coap)](https://github.com/daniellgelencser/go-attested-coap-over-ascon/blob/master/LICENSE)
+[![GoDoc](https://pkg.go.dev/badge/github.com/daniellgelencser/go-attested-coap-over-ascon/v3?utm_source=godoc)](https://pkg.go.dev/github.com/daniellgelencser/go-attested-coap-over-ascon/v3?utm_source=godoc)
+<!-- [![Go Report](https://goreportcard.com/badge/github.com/daniellgelencser/go-attested-coap-over-ascon)](https://goreportcard.com/report/github.com/daniellgelencser/go-attested-coap-over-ascon) -->
 
 The Constrained Application Protocol (CoAP) is a specialized web transfer protocol for use with constrained nodes and constrained networks in the Internet of Things.
 The protocol is designed for machine-to-machine (M2M) applications such as smart energy and building automation.

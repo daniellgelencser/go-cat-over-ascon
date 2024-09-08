@@ -6,7 +6,7 @@ import (
 	"log"
 	"net"
 
-	"go-attested-coap-over-ascon/v3/dtls"
+	"github.com/daniellgelencser/go-attested-coap-over-ascon/v3/dtls"
 
 	piondtls "github.com/pion/dtls/v2"
 )

@@ -3,8 +3,8 @@ package options
 import (
 	"crypto/tls"
 
-	tcpClient "go-attested-coap-over-ascon/v3/tcp/client"
-	tcpServer "go-attested-coap-over-ascon/v3/tcp/server"
+	tcpClient "github.com/daniellgelencser/go-attested-coap-over-ascon/v3/tcp/client"
+	tcpServer "github.com/daniellgelencser/go-attested-coap-over-ascon/v3/tcp/server"
 )
 
 // DisablePeerTCPSignalMessageCSMsOpt coap-tcp csm option.

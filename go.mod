@@ -1,4 +1,4 @@
-module go-attested-coap-over-ascon/v3
+module github.com/daniellgelencser/go-attested-coap-over-ascon/v3
 
 go 1.20
 

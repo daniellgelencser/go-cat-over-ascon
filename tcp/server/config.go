@@ -4,13 +4,13 @@ import (
 	"fmt"
 	"time"
 
-	"go-attested-coap-over-ascon/v3/message"
-	"go-attested-coap-over-ascon/v3/message/codes"
-	"go-attested-coap-over-ascon/v3/message/pool"
-	"go-attested-coap-over-ascon/v3/net/monitor/inactivity"
-	"go-attested-coap-over-ascon/v3/net/responsewriter"
-	"go-attested-coap-over-ascon/v3/options/config"
-	"go-attested-coap-over-ascon/v3/tcp/client"
+	"github.com/daniellgelencser/go-attested-coap-over-ascon/v3/message"
+	"github.com/daniellgelencser/go-attested-coap-over-ascon/v3/message/codes"
+	"github.com/daniellgelencser/go-attested-coap-over-ascon/v3/message/pool"
+	"github.com/daniellgelencser/go-attested-coap-over-ascon/v3/net/monitor/inactivity"
+	"github.com/daniellgelencser/go-attested-coap-over-ascon/v3/net/responsewriter"
+	"github.com/daniellgelencser/go-attested-coap-over-ascon/v3/options/config"
+	"github.com/daniellgelencser/go-attested-coap-over-ascon/v3/tcp/client"
 )
 
 // The HandlerFunc type is an adapter to allow the use of

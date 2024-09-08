@@ -11,16 +11,16 @@ import (
 	"testing"
 	"time"
 
-	"go-attested-coap-over-ascon/v3/message"
-	"go-attested-coap-over-ascon/v3/message/codes"
-	"go-attested-coap-over-ascon/v3/message/pool"
-	"go-attested-coap-over-ascon/v3/mux"
-	coapNet "go-attested-coap-over-ascon/v3/net"
-	"go-attested-coap-over-ascon/v3/net/responsewriter"
-	"go-attested-coap-over-ascon/v3/options"
-	"go-attested-coap-over-ascon/v3/options/config"
-	"go-attested-coap-over-ascon/v3/pkg/runner/periodic"
-	"go-attested-coap-over-ascon/v3/udp/client"
+	"github.com/daniellgelencser/go-attested-coap-over-ascon/v3/message"
+	"github.com/daniellgelencser/go-attested-coap-over-ascon/v3/message/codes"
+	"github.com/daniellgelencser/go-attested-coap-over-ascon/v3/message/pool"
+	"github.com/daniellgelencser/go-attested-coap-over-ascon/v3/mux"
+	coapNet "github.com/daniellgelencser/go-attested-coap-over-ascon/v3/net"
+	"github.com/daniellgelencser/go-attested-coap-over-ascon/v3/net/responsewriter"
+	"github.com/daniellgelencser/go-attested-coap-over-ascon/v3/options"
+	"github.com/daniellgelencser/go-attested-coap-over-ascon/v3/options/config"
+	"github.com/daniellgelencser/go-attested-coap-over-ascon/v3/pkg/runner/periodic"
+	"github.com/daniellgelencser/go-attested-coap-over-ascon/v3/udp/client"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -127,7 +127,7 @@ func TestConnGet(t *testing.T) {
 	err = m.Handle("/empty", mux.HandlerFunc(func(w mux.ResponseWriter, r *mux.Message) {
 		assert.Equal(t, codes.GET, r.Code())
 		// Calling SetResponse was failing with an EOF error when the reader is empty
-		// https://go-attested-coap-over-ascon/issues/157
+		// https://github.com/daniellgelencser/go-attested-coap-over-ascon/issues/157
 		errS := w.SetResponse(codes.Content, message.TextPlain, bytes.NewReader([]byte{}))
 		require.NoError(t, errS)
 		require.NotEmpty(t, w.Conn())

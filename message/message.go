@@ -3,7 +3,7 @@ package message
 import (
 	"fmt"
 
-	"go-attested-coap-over-ascon/v3/message/codes"
+	"github.com/daniellgelencser/go-attested-coap-over-ascon/v3/message/codes"
 )
 
 // MaxTokenSize maximum of token size that can be used in message

@@ -3,7 +3,7 @@ package client
 import (
 	"sync"
 
-	"go-attested-coap-over-ascon/v3/message/pool"
+	"github.com/daniellgelencser/go-attested-coap-over-ascon/v3/message/pool"
 
 	"go.uber.org/atomic"
 )

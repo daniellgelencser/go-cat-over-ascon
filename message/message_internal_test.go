@@ -3,7 +3,7 @@ package message
 import (
 	"testing"
 
-	"go-attested-coap-over-ascon/v3/message/codes"
+	"github.com/daniellgelencser/go-attested-coap-over-ascon/v3/message/codes"
 
 	"github.com/stretchr/testify/require"
 )

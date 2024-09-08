@@ -5,12 +5,12 @@ import (
 	"fmt"
 	"time"
 
-	"go-attested-coap-over-ascon/v3/message"
-	"go-attested-coap-over-ascon/v3/message/pool"
-	"go-attested-coap-over-ascon/v3/net/blockwise"
-	"go-attested-coap-over-ascon/v3/net/client"
-	"go-attested-coap-over-ascon/v3/net/responsewriter"
-	"go-attested-coap-over-ascon/v3/pkg/runner/periodic"
+	"github.com/daniellgelencser/go-attested-coap-over-ascon/v3/message"
+	"github.com/daniellgelencser/go-attested-coap-over-ascon/v3/message/pool"
+	"github.com/daniellgelencser/go-attested-coap-over-ascon/v3/net/blockwise"
+	"github.com/daniellgelencser/go-attested-coap-over-ascon/v3/net/client"
+	"github.com/daniellgelencser/go-attested-coap-over-ascon/v3/net/responsewriter"
+	"github.com/daniellgelencser/go-attested-coap-over-ascon/v3/pkg/runner/periodic"
 )
 
 type (

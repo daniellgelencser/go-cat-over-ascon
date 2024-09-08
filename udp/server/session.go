@@ -7,10 +7,10 @@ import (
 	"sync"
 	"sync/atomic"
 
-	"go-attested-coap-over-ascon/v3/message/pool"
-	coapNet "go-attested-coap-over-ascon/v3/net"
-	"go-attested-coap-over-ascon/v3/udp/client"
-	"go-attested-coap-over-ascon/v3/udp/coder"
+	"github.com/daniellgelencser/go-attested-coap-over-ascon/v3/message/pool"
+	coapNet "github.com/daniellgelencser/go-attested-coap-over-ascon/v3/net"
+	"github.com/daniellgelencser/go-attested-coap-over-ascon/v3/udp/client"
+	"github.com/daniellgelencser/go-attested-coap-over-ascon/v3/udp/coder"
 )
 
 type EventFunc = func()

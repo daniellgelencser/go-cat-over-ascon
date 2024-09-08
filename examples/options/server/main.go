@@ -7,17 +7,17 @@ import (
 	"fmt"
 	"log"
 
-	coap "go-attested-coap-over-ascon/v3"
-	"go-attested-coap-over-ascon/v3/message"
-	"go-attested-coap-over-ascon/v3/message/codes"
-	"go-attested-coap-over-ascon/v3/mux"
-	"go-attested-coap-over-ascon/v3/options"
+	coap "github.com/daniellgelencser/go-attested-coap-over-ascon/v3"
+	"github.com/daniellgelencser/go-attested-coap-over-ascon/v3/message"
+	"github.com/daniellgelencser/go-attested-coap-over-ascon/v3/message/codes"
+	"github.com/daniellgelencser/go-attested-coap-over-ascon/v3/mux"
+	"github.com/daniellgelencser/go-attested-coap-over-ascon/v3/options"
 
 	piondtls "github.com/pion/dtls/v2"
 
-	dtlsServer "go-attested-coap-over-ascon/v3/dtls/server"
-	tcpServer "go-attested-coap-over-ascon/v3/tcp/server"
-	udpClient "go-attested-coap-over-ascon/v3/udp/client"
+	dtlsServer "github.com/daniellgelencser/go-attested-coap-over-ascon/v3/dtls/server"
+	tcpServer "github.com/daniellgelencser/go-attested-coap-over-ascon/v3/tcp/server"
+	udpClient "github.com/daniellgelencser/go-attested-coap-over-ascon/v3/udp/client"
 )
 
 func handleA(w mux.ResponseWriter, r *mux.Message) {

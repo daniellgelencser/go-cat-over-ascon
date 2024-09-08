@@ -3,9 +3,9 @@ package options
 import (
 	"time"
 
-	dtlsServer "go-attested-coap-over-ascon/v3/dtls/server"
-	udpClient "go-attested-coap-over-ascon/v3/udp/client"
-	udpServer "go-attested-coap-over-ascon/v3/udp/server"
+	dtlsServer "github.com/daniellgelencser/go-attested-coap-over-ascon/v3/dtls/server"
+	udpClient "github.com/daniellgelencser/go-attested-coap-over-ascon/v3/udp/client"
+	udpServer "github.com/daniellgelencser/go-attested-coap-over-ascon/v3/udp/server"
 )
 
 // TransmissionOpt transmission options.

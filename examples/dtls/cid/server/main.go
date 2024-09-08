@@ -8,12 +8,12 @@ import (
 	"net"
 	"time"
 
-	"go-attested-coap-over-ascon/v3/dtls/server"
-	"go-attested-coap-over-ascon/v3/message"
-	"go-attested-coap-over-ascon/v3/message/codes"
-	"go-attested-coap-over-ascon/v3/mux"
-	"go-attested-coap-over-ascon/v3/options"
-	udpClient "go-attested-coap-over-ascon/v3/udp/client"
+	"github.com/daniellgelencser/go-attested-coap-over-ascon/v3/dtls/server"
+	"github.com/daniellgelencser/go-attested-coap-over-ascon/v3/message"
+	"github.com/daniellgelencser/go-attested-coap-over-ascon/v3/message/codes"
+	"github.com/daniellgelencser/go-attested-coap-over-ascon/v3/mux"
+	"github.com/daniellgelencser/go-attested-coap-over-ascon/v3/options"
+	udpClient "github.com/daniellgelencser/go-attested-coap-over-ascon/v3/udp/client"
 
 	piondtls "github.com/pion/dtls/v2"
 	"go.uber.org/atomic"

@@ -1,6 +1,6 @@
 package mux
 
-import "go-attested-coap-over-ascon/v3/message/pool"
+import "github.com/daniellgelencser/go-attested-coap-over-ascon/v3/message/pool"
 
 // RouteParams contains all the information related to a route
 type RouteParams struct {

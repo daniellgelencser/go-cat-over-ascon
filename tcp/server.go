@@ -1,7 +1,7 @@
 package tcp
 
 import (
-	"go-attested-coap-over-ascon/v3/tcp/server"
+	"github.com/daniellgelencser/go-attested-coap-over-ascon/v3/tcp/server"
 )
 
 func NewServer(opt ...server.Option) *server.Server {

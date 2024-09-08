@@ -4,7 +4,7 @@ import (
 	"sync"
 	"testing"
 
-	"go-attested-coap-over-ascon/v3/pkg/rand"
+	"github.com/daniellgelencser/go-attested-coap-over-ascon/v3/pkg/rand"
 )
 
 func TestRand(*testing.T) {

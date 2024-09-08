@@ -6,7 +6,7 @@ import (
 	"strings"
 	"time"
 
-	pkgRand "go-attested-coap-over-ascon/v3/pkg/rand"
+	pkgRand "github.com/daniellgelencser/go-attested-coap-over-ascon/v3/pkg/rand"
 )
 
 var weakRng = pkgRand.NewRand(time.Now().UnixNano())

@@ -4,11 +4,11 @@ import (
 	"testing"
 	"time"
 
-	dtlsServer "go-attested-coap-over-ascon/v3/dtls/server"
-	"go-attested-coap-over-ascon/v3/options"
-	"go-attested-coap-over-ascon/v3/udp"
-	"go-attested-coap-over-ascon/v3/udp/client"
-	udpServer "go-attested-coap-over-ascon/v3/udp/server"
+	dtlsServer "github.com/daniellgelencser/go-attested-coap-over-ascon/v3/dtls/server"
+	"github.com/daniellgelencser/go-attested-coap-over-ascon/v3/options"
+	"github.com/daniellgelencser/go-attested-coap-over-ascon/v3/udp"
+	"github.com/daniellgelencser/go-attested-coap-over-ascon/v3/udp/client"
+	udpServer "github.com/daniellgelencser/go-attested-coap-over-ascon/v3/udp/server"
 
 	"github.com/stretchr/testify/require"
 )

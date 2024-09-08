@@ -1,7 +1,7 @@
 package main
 
 import (
-	"go-attested-coap-over-ascon/v3/ascon/coder"
+	"github.com/daniellgelencser/go-attested-coap-over-ascon/v3/ascon/coder"
 )
 
 func main() {

@@ -9,12 +9,12 @@ import (
 	"sync"
 	"time"
 
-	"go-attested-coap-over-ascon/v3/message"
-	"go-attested-coap-over-ascon/v3/message/codes"
-	"go-attested-coap-over-ascon/v3/message/pool"
-	coapNet "go-attested-coap-over-ascon/v3/net"
-	"go-attested-coap-over-ascon/v3/net/monitor/inactivity"
-	"go-attested-coap-over-ascon/v3/tcp/coder"
+	"github.com/daniellgelencser/go-attested-coap-over-ascon/v3/message"
+	"github.com/daniellgelencser/go-attested-coap-over-ascon/v3/message/codes"
+	"github.com/daniellgelencser/go-attested-coap-over-ascon/v3/message/pool"
+	coapNet "github.com/daniellgelencser/go-attested-coap-over-ascon/v3/net"
+	"github.com/daniellgelencser/go-attested-coap-over-ascon/v3/net/monitor/inactivity"
+	"github.com/daniellgelencser/go-attested-coap-over-ascon/v3/tcp/coder"
 
 	"go.uber.org/atomic"
 )

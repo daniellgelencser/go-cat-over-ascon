@@ -8,15 +8,15 @@ import (
 	"sync"
 	"time"
 
-	"go-attested-coap-over-ascon/v3/message"
-	"go-attested-coap-over-ascon/v3/message/pool"
-	coapNet "go-attested-coap-over-ascon/v3/net"
-	"go-attested-coap-over-ascon/v3/net/blockwise"
-	"go-attested-coap-over-ascon/v3/net/monitor/inactivity"
-	"go-attested-coap-over-ascon/v3/net/responsewriter"
-	"go-attested-coap-over-ascon/v3/pkg/cache"
-	coapSync "go-attested-coap-over-ascon/v3/pkg/sync"
-	"go-attested-coap-over-ascon/v3/udp/client"
+	"github.com/daniellgelencser/go-attested-coap-over-ascon/v3/message"
+	"github.com/daniellgelencser/go-attested-coap-over-ascon/v3/message/pool"
+	coapNet "github.com/daniellgelencser/go-attested-coap-over-ascon/v3/net"
+	"github.com/daniellgelencser/go-attested-coap-over-ascon/v3/net/blockwise"
+	"github.com/daniellgelencser/go-attested-coap-over-ascon/v3/net/monitor/inactivity"
+	"github.com/daniellgelencser/go-attested-coap-over-ascon/v3/net/responsewriter"
+	"github.com/daniellgelencser/go-attested-coap-over-ascon/v3/pkg/cache"
+	coapSync "github.com/daniellgelencser/go-attested-coap-over-ascon/v3/pkg/sync"
+	"github.com/daniellgelencser/go-attested-coap-over-ascon/v3/udp/client"
 )
 
 type Server struct {

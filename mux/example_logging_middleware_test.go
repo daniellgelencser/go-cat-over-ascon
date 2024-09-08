@@ -3,7 +3,7 @@ package mux_test
 import (
 	"log"
 
-	"go-attested-coap-over-ascon/v3/mux"
+	"github.com/daniellgelencser/go-attested-coap-over-ascon/v3/mux"
 )
 
 // Middleware function, which will be called for each request

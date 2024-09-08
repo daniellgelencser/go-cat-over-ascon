@@ -5,10 +5,10 @@ import (
 	"fmt"
 	"log"
 
-	coap "go-attested-coap-over-ascon/v3"
-	"go-attested-coap-over-ascon/v3/message"
-	"go-attested-coap-over-ascon/v3/message/codes"
-	"go-attested-coap-over-ascon/v3/mux"
+	coap "github.com/daniellgelencser/go-attested-coap-over-ascon/v3"
+	"github.com/daniellgelencser/go-attested-coap-over-ascon/v3/message"
+	"github.com/daniellgelencser/go-attested-coap-over-ascon/v3/message/codes"
+	"github.com/daniellgelencser/go-attested-coap-over-ascon/v3/mux"
 
 	piondtls "github.com/pion/dtls/v2"
 )
