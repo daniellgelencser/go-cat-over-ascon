@@ -10,8 +10,8 @@ import (
 
 	"github.com/daniellgelencser/go-attested-coap-over-ascon/v3/message"
 	"github.com/daniellgelencser/go-attested-coap-over-ascon/v3/message/pool"
-	"github.com/daniellgelencser/go-attested-coap-over-ascon/v3/tcp/coder"
 	"github.com/daniellgelencser/go-attested-coap-over-ascon/v3/test/net"
+	"github.com/daniellgelencser/go-attested-coap-over-ascon/v3/udp/coder"
 
 	"github.com/stretchr/testify/require"
 )

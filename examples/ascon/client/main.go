@@ -11,7 +11,7 @@ import (
 )
 
 func main() {
-	co, err := ascon.Dial("192.168.1.22:5688")
+	co, err := ascon.Dial /*("192.168.1.22:5688") */ ("localhost:5688")
 	if err != nil {
 		log.Fatalf("Error dialing: %v", err)
 	}

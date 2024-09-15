@@ -16,8 +16,6 @@ import (
 	"github.com/daniellgelencser/go-attested-coap-over-ascon/v3/net/responsewriter"
 	"github.com/daniellgelencser/go-attested-coap-over-ascon/v3/options/config"
 	"github.com/daniellgelencser/go-attested-coap-over-ascon/v3/pkg/runner/periodic"
-	tcpClient "github.com/daniellgelencser/go-attested-coap-over-ascon/v3/tcp/client"
-	tcpServer "github.com/daniellgelencser/go-attested-coap-over-ascon/v3/tcp/server"
 	udpClient "github.com/daniellgelencser/go-attested-coap-over-ascon/v3/udp/client"
 	udpServer "github.com/daniellgelencser/go-attested-coap-over-ascon/v3/udp/server"
 )
@@ -25,7 +23,7 @@ import (
 type ErrorFunc = config.ErrorFunc
 
 type Handler interface {
-	tcpClient.HandlerFunc | udpClient.HandlerFunc
+	udpClient.HandlerFunc
 }
 
 // HandlerFuncOpt handler function option.
@@ -35,26 +33,6 @@ type HandlerFuncOpt[H Handler] struct {
 
 func panicForInvalidHandlerFunc(t, exp any) {
 	panic(fmt.Errorf("invalid HandlerFunc type %T, expected %T", t, exp))
-}
-
-func (o HandlerFuncOpt[H]) TCPServerApply(cfg *tcpServer.Config) {
-	switch v := any(o.h).(type) {
-	case tcpClient.HandlerFunc:
-		cfg.Handler = v
-	default:
-		var exp tcpClient.HandlerFunc
-		panicForInvalidHandlerFunc(v, exp)
-	}
-}
-
-func (o HandlerFuncOpt[H]) TCPClientApply(cfg *tcpClient.Config) {
-	switch v := any(o.h).(type) {
-	case tcpClient.HandlerFunc:
-		cfg.Handler = v
-	default:
-		var exp tcpClient.HandlerFunc
-		panicForInvalidHandlerFunc(v, exp)
-	}
 }
 
 func (o HandlerFuncOpt[H]) UDPServerApply(cfg *udpServer.Config) {
@@ -117,14 +95,6 @@ type MuxHandlerOpt struct {
 	m mux.Handler
 }
 
-func (o MuxHandlerOpt) TCPServerApply(cfg *tcpServer.Config) {
-	cfg.Handler = mux.ToHandler[*tcpClient.Conn](o.m)
-}
-
-func (o MuxHandlerOpt) TCPClientApply(cfg *tcpClient.Config) {
-	cfg.Handler = mux.ToHandler[*tcpClient.Conn](o.m)
-}
-
 func (o MuxHandlerOpt) UDPServerApply(cfg *udpServer.Config) {
 	cfg.Handler = mux.ToHandler[*udpClient.Conn](o.m)
 }
@@ -157,14 +127,6 @@ type ContextOpt struct {
 	ctx context.Context
 }
 
-func (o ContextOpt) TCPServerApply(cfg *tcpServer.Config) {
-	cfg.Ctx = o.ctx
-}
-
-func (o ContextOpt) TCPClientApply(cfg *tcpClient.Config) {
-	cfg.Ctx = o.ctx
-}
-
 func (o ContextOpt) UDPServerApply(cfg *udpServer.Config) {
 	cfg.Ctx = o.ctx
 }
@@ -195,14 +157,6 @@ type MaxMessageSizeOpt struct {
 	maxMessageSize uint32
 }
 
-func (o MaxMessageSizeOpt) TCPServerApply(cfg *tcpServer.Config) {
-	cfg.MaxMessageSize = o.maxMessageSize
-}
-
-func (o MaxMessageSizeOpt) TCPClientApply(cfg *tcpClient.Config) {
-	cfg.MaxMessageSize = o.maxMessageSize
-}
-
 func (o MaxMessageSizeOpt) UDPServerApply(cfg *udpServer.Config) {
 	cfg.MaxMessageSize = o.maxMessageSize
 }
@@ -231,14 +185,6 @@ func WithMaxMessageSize(maxMessageSize uint32) MaxMessageSizeOpt {
 // ErrorsOpt errors option.
 type ErrorsOpt struct {
 	errors ErrorFunc
-}
-
-func (o ErrorsOpt) TCPServerApply(cfg *tcpServer.Config) {
-	cfg.Errors = o.errors
-}
-
-func (o ErrorsOpt) TCPClientApply(cfg *tcpClient.Config) {
-	cfg.Errors = o.errors
 }
 
 func (o ErrorsOpt) UDPServerApply(cfg *udpServer.Config) {
@@ -273,26 +219,6 @@ type ProcessReceivedMessageOpt[C responsewriter.Client] struct {
 
 func panicForInvalidProcessReceivedMessageFunc(t, exp any) {
 	panic(fmt.Errorf("invalid ProcessReceivedMessageFunc type %T, expected %T", t, exp))
-}
-
-func (o ProcessReceivedMessageOpt[C]) TCPServerApply(cfg *tcpServer.Config) {
-	switch v := any(o.ProcessReceivedMessageFunc).(type) {
-	case config.ProcessReceivedMessageFunc[*tcpClient.Conn]:
-		cfg.ProcessReceivedMessage = v
-	default:
-		var t config.ProcessReceivedMessageFunc[*tcpClient.Conn]
-		panicForInvalidProcessReceivedMessageFunc(v, t)
-	}
-}
-
-func (o ProcessReceivedMessageOpt[C]) TCPClientApply(cfg *tcpClient.Config) {
-	switch v := any(o.ProcessReceivedMessageFunc).(type) {
-	case config.ProcessReceivedMessageFunc[*tcpClient.Conn]:
-		cfg.ProcessReceivedMessage = v
-	default:
-		var t config.ProcessReceivedMessageFunc[*tcpClient.Conn]
-		panicForInvalidProcessReceivedMessageFunc(v, t)
-	}
 }
 
 func (o ProcessReceivedMessageOpt[C]) UDPServerApply(cfg *udpServer.Config) {
@@ -352,11 +278,10 @@ func WithProcessReceivedMessageFunc[C responsewriter.Client](processReceivedMess
 type (
 	ASCONOnInactive = func(cc *connection.Conn)
 	UDPOnInactive   = func(cc *udpClient.Conn)
-	TCPOnInactive   = func(cc *tcpClient.Conn)
 )
 
 type OnInactiveFunc interface {
-	UDPOnInactive | TCPOnInactive
+	UDPOnInactive
 }
 
 func panicForInvalidOnInactiveFunc(t, exp any) {
@@ -368,15 +293,6 @@ type KeepAliveOpt[C OnInactiveFunc] struct {
 	timeout    time.Duration
 	onInactive C
 	maxRetries uint32
-}
-
-func (o KeepAliveOpt[C]) toTCPCreateInactivityMonitor(onInactive TCPOnInactive) func() tcpClient.InactivityMonitor {
-	return func() tcpClient.InactivityMonitor {
-		keepalive := inactivity.NewKeepAlive(o.maxRetries, onInactive, func(cc *tcpClient.Conn, receivePong func()) (func(), error) {
-			return cc.AsyncPing(receivePong)
-		})
-		return inactivity.New(o.timeout/time.Duration(o.maxRetries+1), keepalive.OnInactive)
-	}
 }
 
 func (o KeepAliveOpt[C]) toUDPCreateInactivityMonitor(onInactive UDPOnInactive) func() udpClient.InactivityMonitor {
@@ -395,26 +311,6 @@ func (o KeepAliveOpt[C]) toASCONCreateInactivityMonitor(onInactive ASCONOnInacti
 		})
 		return inactivity.New(o.timeout/time.Duration(o.maxRetries+1), keepalive.OnInactive)
 
-	}
-}
-
-func (o KeepAliveOpt[C]) TCPServerApply(cfg *tcpServer.Config) {
-	switch onInactive := any(o.onInactive).(type) {
-	case TCPOnInactive:
-		cfg.CreateInactivityMonitor = o.toTCPCreateInactivityMonitor(onInactive)
-	default:
-		var t TCPOnInactive
-		panicForInvalidOnInactiveFunc(onInactive, t)
-	}
-}
-
-func (o KeepAliveOpt[C]) TCPClientApply(cfg *tcpClient.Config) {
-	switch onInactive := any(o.onInactive).(type) {
-	case TCPOnInactive:
-		cfg.CreateInactivityMonitor = o.toTCPCreateInactivityMonitor(onInactive)
-	default:
-		var t TCPOnInactive
-		panicForInvalidOnInactiveFunc(onInactive, t)
 	}
 }
 
@@ -483,12 +379,6 @@ type InactivityMonitorOpt[C OnInactiveFunc] struct {
 	onInactive C
 }
 
-func (o InactivityMonitorOpt[C]) toTCPCreateInactivityMonitor(onInactive TCPOnInactive) func() tcpClient.InactivityMonitor {
-	return func() tcpClient.InactivityMonitor {
-		return inactivity.New(o.duration, onInactive)
-	}
-}
-
 func (o InactivityMonitorOpt[C]) toUDPCreateInactivityMonitor(onInactive UDPOnInactive) func() udpClient.InactivityMonitor {
 	return func() udpClient.InactivityMonitor {
 		return inactivity.New(o.duration, onInactive)
@@ -498,26 +388,6 @@ func (o InactivityMonitorOpt[C]) toUDPCreateInactivityMonitor(onInactive UDPOnIn
 func (o InactivityMonitorOpt[C]) toASCONCreateInactivityMonitor(onInactive ASCONOnInactive) func() connection.InactivityMonitor {
 	return func() connection.InactivityMonitor {
 		return inactivity.New(o.duration, onInactive)
-	}
-}
-
-func (o InactivityMonitorOpt[C]) TCPServerApply(cfg *tcpServer.Config) {
-	switch onInactive := any(o.onInactive).(type) {
-	case TCPOnInactive:
-		cfg.CreateInactivityMonitor = o.toTCPCreateInactivityMonitor(onInactive)
-	default:
-		var t TCPOnInactive
-		panicForInvalidOnInactiveFunc(onInactive, t)
-	}
-}
-
-func (o InactivityMonitorOpt[C]) TCPClientApply(cfg *tcpClient.Config) {
-	switch onInactive := any(o.onInactive).(type) {
-	case TCPOnInactive:
-		cfg.CreateInactivityMonitor = o.toTCPCreateInactivityMonitor(onInactive)
-	default:
-		var t TCPOnInactive
-		panicForInvalidOnInactiveFunc(onInactive, t)
 	}
 }
 
@@ -584,10 +454,6 @@ type NetOpt struct {
 	net string
 }
 
-func (o NetOpt) TCPClientApply(cfg *tcpClient.Config) {
-	cfg.Net = o.net
-}
-
 func (o NetOpt) UDPClientApply(cfg *udpClient.Config) {
 	cfg.Net = o.net
 }
@@ -604,14 +470,6 @@ func WithNetwork(net string) NetOpt {
 // PeriodicRunnerOpt function which is executed in every ticks
 type PeriodicRunnerOpt struct {
 	periodicRunner periodic.Func
-}
-
-func (o PeriodicRunnerOpt) TCPClientApply(cfg *tcpClient.Config) {
-	cfg.PeriodicRunner = o.periodicRunner
-}
-
-func (o PeriodicRunnerOpt) TCPServerApply(cfg *tcpServer.Config) {
-	cfg.PeriodicRunner = o.periodicRunner
 }
 
 func (o PeriodicRunnerOpt) UDPClientApply(cfg *udpClient.Config) {
@@ -676,18 +534,6 @@ func (o BlockwiseOpt) ASCONClientApply(cfg *connection.Config) {
 	cfg.BlockwiseTransferTimeout = o.transferTimeout
 }
 
-func (o BlockwiseOpt) TCPServerApply(cfg *tcpServer.Config) {
-	cfg.BlockwiseEnable = o.enable
-	cfg.BlockwiseSZX = o.szx
-	cfg.BlockwiseTransferTimeout = o.transferTimeout
-}
-
-func (o BlockwiseOpt) TCPClientApply(cfg *tcpClient.Config) {
-	cfg.BlockwiseEnable = o.enable
-	cfg.BlockwiseSZX = o.szx
-	cfg.BlockwiseTransferTimeout = o.transferTimeout
-}
-
 // WithBlockwise configure's blockwise transfer.
 func WithBlockwise(enable bool, szx blockwise.SZX, transferTimeout time.Duration) BlockwiseOpt {
 	return BlockwiseOpt{
@@ -698,7 +544,7 @@ func WithBlockwise(enable bool, szx blockwise.SZX, transferTimeout time.Duration
 }
 
 type OnNewConnFunc interface {
-	tcpServer.OnNewConnFunc | udpServer.OnNewConnFunc
+	udpServer.OnNewConnFunc
 }
 
 // OnNewConnOpt network option.
@@ -740,16 +586,6 @@ func (o OnNewConnOpt[F]) DTLSServerApply(cfg *dtlsServer.Config) {
 	}
 }
 
-func (o OnNewConnOpt[F]) TCPServerApply(cfg *tcpServer.Config) {
-	switch v := any(o.f).(type) {
-	case tcpServer.OnNewConnFunc:
-		cfg.OnNewConn = v
-	default:
-		var exp tcpServer.OnNewConnFunc
-		panicForInvalidOnNewConnFunc(v, exp)
-	}
-}
-
 // WithOnNewConn server's notify about new client connection.
 func WithOnNewConn[F OnNewConnFunc](onNewConn F) OnNewConnOpt[F] {
 	return OnNewConnOpt[F]{
@@ -759,7 +595,7 @@ func WithOnNewConn[F OnNewConnFunc](onNewConn F) OnNewConnOpt[F] {
 
 // WithRequestMonitor
 type WithRequestMonitorFunc interface {
-	tcpClient.RequestMonitorFunc | udpClient.RequestMonitorFunc
+	udpClient.RequestMonitorFunc
 }
 
 // WithRequestMonitorOpt network option.
@@ -791,16 +627,6 @@ func (o WithRequestMonitorOpt[F]) DTLSServerApply(cfg *dtlsServer.Config) {
 	}
 }
 
-func (o WithRequestMonitorOpt[F]) TCPServerApply(cfg *tcpServer.Config) {
-	switch v := any(o.f).(type) {
-	case tcpClient.RequestMonitorFunc:
-		cfg.RequestMonitor = v
-	default:
-		var exp tcpClient.RequestMonitorFunc
-		panicForInvalidWithRequestMonitorFunc(v, exp)
-	}
-}
-
 // WithRequestMonitor enables request monitoring for the connection.
 // It is called for each CoAP message received from the peer before it is processed.
 // If it returns an error, the connection is closed.
@@ -813,10 +639,6 @@ func WithRequestMonitor[F WithRequestMonitorFunc](requestMonitor F) WithRequestM
 
 // CloseSocketOpt close socket option.
 type CloseSocketOpt struct{}
-
-func (o CloseSocketOpt) TCPClientApply(cfg *tcpClient.Config) {
-	cfg.CloseSocket = true
-}
 
 func (o CloseSocketOpt) UDPClientApply(cfg *udpClient.Config) {
 	cfg.CloseSocket = true
@@ -848,12 +670,6 @@ func (o DialerOpt) ASCONClientApply(cfg *connection.Config) {
 	}
 }
 
-func (o DialerOpt) TCPClientApply(cfg *tcpClient.Config) {
-	if o.dialer != nil {
-		cfg.Dialer = o.dialer
-	}
-}
-
 // WithDialer set dialer for dial.
 func WithDialer(dialer *net.Dialer) DialerOpt {
 	return DialerOpt{
@@ -864,14 +680,6 @@ func WithDialer(dialer *net.Dialer) DialerOpt {
 // ConnectionCacheOpt network option.
 type MessagePoolOpt struct {
 	messagePool *pool.Pool
-}
-
-func (o MessagePoolOpt) TCPServerApply(cfg *tcpServer.Config) {
-	cfg.MessagePool = o.messagePool
-}
-
-func (o MessagePoolOpt) TCPClientApply(cfg *tcpClient.Config) {
-	cfg.MessagePool = o.messagePool
 }
 
 func (o MessagePoolOpt) UDPServerApply(cfg *udpServer.Config) {
@@ -906,14 +714,6 @@ type GetTokenOpt struct {
 	getToken client.GetTokenFunc
 }
 
-func (o GetTokenOpt) TCPServerApply(cfg *tcpServer.Config) {
-	cfg.GetToken = o.getToken
-}
-
-func (o GetTokenOpt) TCPClientApply(cfg *tcpClient.Config) {
-	cfg.GetToken = o.getToken
-}
-
 func (o GetTokenOpt) UDPServerApply(cfg *udpServer.Config) {
 	cfg.GetToken = o.getToken
 }
@@ -942,14 +742,6 @@ func WithGetToken(getToken client.GetTokenFunc) GetTokenOpt {
 // LimitClientParallelRequestOpt limit's number of parallel requests from client.
 type LimitClientParallelRequestOpt struct {
 	limitClientParallelRequests int64
-}
-
-func (o LimitClientParallelRequestOpt) TCPServerApply(cfg *tcpServer.Config) {
-	cfg.LimitClientParallelRequests = o.limitClientParallelRequests
-}
-
-func (o LimitClientParallelRequestOpt) TCPClientApply(cfg *tcpClient.Config) {
-	cfg.LimitClientParallelRequests = o.limitClientParallelRequests
 }
 
 func (o LimitClientParallelRequestOpt) UDPServerApply(cfg *udpServer.Config) {
@@ -982,14 +774,6 @@ type LimitClientEndpointParallelRequestOpt struct {
 	limitClientEndpointParallelRequests int64
 }
 
-func (o LimitClientEndpointParallelRequestOpt) TCPServerApply(cfg *tcpServer.Config) {
-	cfg.LimitClientEndpointParallelRequests = o.limitClientEndpointParallelRequests
-}
-
-func (o LimitClientEndpointParallelRequestOpt) TCPClientApply(cfg *tcpClient.Config) {
-	cfg.LimitClientEndpointParallelRequests = o.limitClientEndpointParallelRequests
-}
-
 func (o LimitClientEndpointParallelRequestOpt) UDPServerApply(cfg *udpServer.Config) {
 	cfg.LimitClientEndpointParallelRequests = o.limitClientEndpointParallelRequests
 }
@@ -1018,14 +802,6 @@ func WithLimitClientEndpointParallelRequest(limitClientEndpointParallelRequests 
 // ReceivedMessageQueueSizeOpt limit's message queue size for received messages.
 type ReceivedMessageQueueSizeOpt struct {
 	receivedMessageQueueSize int
-}
-
-func (o ReceivedMessageQueueSizeOpt) TCPServerApply(cfg *tcpServer.Config) {
-	cfg.ReceivedMessageQueueSize = o.receivedMessageQueueSize
-}
-
-func (o ReceivedMessageQueueSizeOpt) TCPClientApply(cfg *tcpClient.Config) {
-	cfg.ReceivedMessageQueueSize = o.receivedMessageQueueSize
 }
 
 func (o ReceivedMessageQueueSizeOpt) UDPServerApply(cfg *udpServer.Config) {

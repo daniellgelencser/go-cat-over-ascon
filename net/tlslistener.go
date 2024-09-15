@@ -2,8 +2,6 @@ package net
 
 import (
 	"context"
-	"crypto/tls"
-	"fmt"
 	"net"
 
 	"go.uber.org/atomic"
@@ -12,23 +10,22 @@ import (
 // TLSListener is a TLS listener that provides accept with context.
 type TLSListener struct {
 	listener net.Listener
-	tcp      *net.TCPListener
 	closed   atomic.Bool
 }
 
 // NewTLSListener creates tcp listener.
 // Known networks are "tcp", "tcp4" (IPv4-only), "tcp6" (IPv6-only).
-func NewTLSListener(network string, addr string, tlsCfg *tls.Config) (*TLSListener, error) {
-	tcp, err := newNetTCPListen(network, addr)
-	if err != nil {
-		return nil, fmt.Errorf("cannot create new tls listener: %w", err)
-	}
-	tls := tls.NewListener(tcp, tlsCfg)
-	return &TLSListener{
-		tcp:      tcp,
-		listener: tls,
-	}, nil
-}
+// func NewTLSListener(network string, addr string, tlsCfg *tls.Config) (*TLSListener, error) {
+// 	// tcp, err := newNetTCPListen(network, addr)
+// 	if err != nil {
+// 		return nil, fmt.Errorf("cannot create new tls listener: %w", err)
+// 	}
+// 	tls := tls.NewListener(tcp, tlsCfg)
+// 	return &TLSListener{
+// 		tcp:      tcp,
+// 		listener: tls,
+// 	}, nil
+// }
 
 // AcceptWithContext waits with context for a generic Conn.
 func (l *TLSListener) AcceptWithContext(ctx context.Context) (net.Conn, error) {

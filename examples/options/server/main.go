@@ -3,7 +3,6 @@ package main
 import (
 	"bytes"
 	"context"
-	"crypto/tls"
 	"fmt"
 	"log"
 
@@ -16,7 +15,6 @@ import (
 	piondtls "github.com/pion/dtls/v2"
 
 	dtlsServer "github.com/daniellgelencser/go-attested-coap-over-ascon/v3/dtls/server"
-	tcpServer "github.com/daniellgelencser/go-attested-coap-over-ascon/v3/tcp/server"
 	udpClient "github.com/daniellgelencser/go-attested-coap-over-ascon/v3/udp/client"
 )
 
@@ -60,27 +58,12 @@ func main() {
 	m.Handle("/a", mux.HandlerFunc(handleA))
 	m.Handle("/b", mux.HandlerFunc(handleB))
 
-	tcpOpts := []tcpServer.Option{}
-	tcpOpts = append(tcpOpts,
-		options.WithMux(m),
-		options.WithContext(context.Background()))
-
 	dtlsOpts := []dtlsServer.Option{}
 	dtlsOpts = append(dtlsOpts,
 		options.WithMux(m),
 		options.WithContext(context.Background()),
 		options.WithOnNewConn(handleOnNewConn),
 	)
-
-	go func() {
-		// serve a tcp server on :5686
-		log.Fatal(coap.ListenAndServeWithOptions("tcp", ":5686", tcpOpts))
-	}()
-
-	go func() {
-		// serve a tls tcp server on :5687
-		log.Fatal(coap.ListenAndServeTCPTLSWithOptions("tcp", "5687", &tls.Config{}, tcpOpts...))
-	}()
 
 	go func() {
 		// serve a udp dtls server on :5688
